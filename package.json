@@ -15,8 +15,8 @@
     "watch": "rollup -cw",
     "build": "rollup -c",
     "test": "jest --watch",
-    "test-ci": "jest test --ci --reporters=default --reporters=jest-junit && prettier --check \"{./src/**/*.tsx,./src/**/*.ts,./src/**/*.json}\" && eslint ./src/**",
-    "lint": "eslint ./src/**",
+    "test-ci": "jest test --ci --reporters=default --reporters=jest-junit && prettier --check \"{./src/**/*.tsx,./src/**/*.ts,./src/**/*.json}\" && eslint index.ts ./src/**",
+    "lint": "eslint index.ts ./src/**",
     "prettier": "prettier --write \"{./src/**/*.tsx,./src/**/*.ts,./src/**/*.json}\""
   },
   "husky": {

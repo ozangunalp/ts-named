@@ -5,25 +5,6 @@ export interface ConfigSet {
   compilerModule?: typeof TS;
 }
 
-export function createTransformerFactory(cs: ConfigSet): TransformerFactory<SourceFile> {
-  return context => file => visitSourceFile(file, context, cs.compilerModule || ts) as SourceFile;
-}
-
-export function namedTransformer(pluginOptions: ConfigSet = {}): TransformerFactory<SourceFile> {
-  return (context: TransformationContext) => (file: SourceFile) =>
-    visitSourceFile(file, context, pluginOptions.compilerModule || ts) as SourceFile;
-}
-
-export function visitSourceFile(sourceFile: SourceFile, context: TransformationContext, ts: typeof TS) {
-  return visitNodeAndChildren(sourceFile);
-
-  function visitNodeAndChildren(node: Node): undefined | Node {
-    if (node == null) return node;
-    node = ts.visitEachChild(node, childNode => visitNodeAndChildren(childNode), context);
-    return visitNode(node, ts);
-  }
-}
-
 function visitNode(node: Node, ts: typeof TS) {
   if (node == null) return node;
   if (ts.isCallExpression(node)) {
@@ -49,4 +30,23 @@ function visitNode(node: Node, ts: typeof TS) {
     }
   }
   return node;
+}
+
+export function visitSourceFile(sourceFile: SourceFile, context: TransformationContext, ts: typeof TS) {
+  function visitNodeAndChildren(node: Node): undefined | Node {
+    if (node == null) return node;
+    node = ts.visitEachChild(node, childNode => visitNodeAndChildren(childNode), context);
+    return visitNode(node, ts);
+  }
+
+  return visitNodeAndChildren(sourceFile);
+}
+
+export function createTransformerFactory(cs: ConfigSet): TransformerFactory<SourceFile> {
+  return context => file => visitSourceFile(file, context, cs.compilerModule || ts) as SourceFile;
+}
+
+export function namedTransformer(pluginOptions: ConfigSet = {}): TransformerFactory<SourceFile> {
+  return (context: TransformationContext) => (file: SourceFile) =>
+    visitSourceFile(file, context, pluginOptions.compilerModule || ts) as SourceFile;
 }
