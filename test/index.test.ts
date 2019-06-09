@@ -43,7 +43,7 @@ describe('blah', () => {
         },
         target: ts.ScriptTarget.ESNext,
       },
-      transformers: { before: [namedTransformer] },
+      transformers: { before: [namedTransformer()] },
     });
     console.log(result.outputText);
     eval(result.outputText);
@@ -57,7 +57,7 @@ describe('blah', () => {
         },
         target: ts.ScriptTarget.ESNext,
       },
-      transformers: { before: [namedTransformer] },
+      transformers: { before: [namedTransformer()] },
     });
     console.log(result.outputText);
     eval(result.outputText);
@@ -71,7 +71,7 @@ describe('blah', () => {
         },
         target: ts.ScriptTarget.ESNext,
       },
-      transformers: { before: [namedTransformer] },
+      transformers: { before: [namedTransformer()] },
     });
     console.log(result.outputText);
     eval(result.outputText);

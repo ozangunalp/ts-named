@@ -1,16 +1,18 @@
-import TS, { ArrowFunction, Node, SourceFile, TransformationContext, TransformerFactory } from 'typescript';
+import TS, * as ts from 'typescript';
+import { ArrowFunction, Node, SourceFile, TransformationContext, TransformerFactory } from 'typescript';
 
 export interface ConfigSet {
-  compilerModule: typeof TS;
+  compilerModule?: typeof TS;
 }
 
 export function createTransformerFactory(cs: ConfigSet): TransformerFactory<SourceFile> {
-  return context => file => visitSourceFile(file, context, cs.compilerModule) as SourceFile;
+  return context => file => visitSourceFile(file, context, cs.compilerModule || ts) as SourceFile;
 }
 
-export const namedTransformer: TransformerFactory<SourceFile> = context => {
-  return file => visitSourceFile(file, context, TS) as SourceFile;
-};
+export function namedTransformer(pluginOptions: ConfigSet = {}): TransformerFactory<SourceFile> {
+  return (context: TransformationContext) => (file: SourceFile) =>
+    visitSourceFile(file, context, pluginOptions.compilerModule || ts) as SourceFile;
+}
 
 export function visitSourceFile(sourceFile: SourceFile, context: TransformationContext, ts: typeof TS) {
   return visitNodeAndChildren(sourceFile);

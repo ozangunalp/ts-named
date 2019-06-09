@@ -1,10 +1,10 @@
-import * as ts from 'typescript';
+import { SourceFile, TransformerFactory } from 'typescript';
 import { ConfigSet, createTransformerFactory, namedTransformer } from './src/namedTransformer';
 
 export declare function named<T>(idF: (id: string) => T): T;
 
 interface Transformer {
-  (): ts.TransformerFactory<ts.SourceFile>;
+  (): TransformerFactory<SourceFile>;
 }
 
 const transformer: Transformer = (namedTransformer as any) as Transformer;
