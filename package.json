@@ -1,0 +1,54 @@
+{
+  "name": "ts-named",
+  "version": "1.0.0",
+  "description": "Ts-Named : Typescript transformer for named assignments",
+  "author": "Ozan Gunalp <ozangunalp@gmail.com>",
+  "license": "MIT",
+  "source": "index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "watch": "rollup -cw",
+    "build": "rollup -c",
+    "test": "jest --watch",
+    "test-ci": "jest test --ci --reporters=default --reporters=jest-junit && prettier --check \"{./src/**/*.tsx,./src/**/*.ts,./src/**/*.json}\" && eslint ./src/**",
+    "lint": "eslint ./src/**",
+    "prettier": "prettier --write \"{./src/**/*.tsx,./src/**/*.ts,./src/**/*.json}\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "peerDependencies": {
+    "typescript": "3.5.1"
+  },
+  "devDependencies": {
+    "@types/jest": "24.0.13",
+    "@typescript-eslint/eslint-plugin": "1.9.0",
+    "@typescript-eslint/parser": "1.9.0",
+    "eslint": "5.16.0",
+    "eslint-config-prettier": "4.3.0",
+    "eslint-plugin-prettier": "3.1.0",
+    "husky": "2.4.0",
+    "jest": "24.8.0",
+    "jest-junit": "6.4.0",
+    "jest-watch-typeahead": "0.3.1",
+    "rollup": "1.11.3",
+    "rollup-plugin-typescript2": "0.21.0",
+    "typescript": "3.5.1",
+    "prettier": "1.18.2",
+    "pretty-quick": "1.11.0",
+    "ts-jest": "24.0.2"
+  }
+}
