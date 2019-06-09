@@ -1,7 +1,7 @@
 {
   "name": "ts-named",
   "version": "1.0.0",
-  "description": "Ts-Named : Typescript transformer for named assignments",
+  "description": "Ts-Named : TypeScript Transformer for extracting variable name",
   "author": "Ozan Gunalp <ozangunalp@gmail.com>",
   "license": "MIT",
   "source": "index.ts",
@@ -31,7 +31,7 @@
     "trailingComma": "es5"
   },
   "peerDependencies": {
-    "typescript": "3.5.1"
+    "typescript": "^3.0.0"
   },
   "devDependencies": {
     "@types/jest": "24.0.13",
