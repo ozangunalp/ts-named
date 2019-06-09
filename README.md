@@ -1,5 +1,8 @@
 # Ts-Named : TypeScript Transformer for extracting variable name
 
+[![npm version](https://badge.fury.io/js/ts-named.svg)](https://badge.fury.io/js/ts-named)
+[![Build Status](https://travis-ci.org/ozangunalp/ts-named.svg?branch=master)](https://travis-ci.org/ozangunalp/ts-named)
+
 ### Transforms :
 
 ```typescript
