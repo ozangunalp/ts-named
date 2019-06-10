@@ -9,7 +9,7 @@ function visitNode(node: Node, ts: typeof TS) {
   if (node == null) return node;
   if (ts.isCallExpression(node)) {
     if (node.expression.getText() === 'named') {
-      if (ts.isVariableDeclaration(node.parent)) {
+      if (ts.isVariableDeclaration(node.parent) || ts.isPropertyDeclaration(node.parent)) {
         if (ts.isArrowFunction(node.arguments[0])) {
           let expression = node.arguments[0] as ArrowFunction;
           let statements = null;

@@ -33,6 +33,19 @@ const named1 = named(id => {
 console.log(named1.id === 'named1');
 `;
 
+let source4 = `
+import { named } from 'ts-named';
+
+class Typed {
+  readonly named1 = named(id => ({ id: id, type: "Type"}));
+  readonly named2 = named(id => ({ id: id, type: "Other Type"}));
+
+}
+const typed = new Typed()
+console.log(typed.named1.id === 'named1');
+console.log(typed.named2.id === 'named2');
+`;
+
 describe('blah', () => {
   it('works', () => {
     let result = ts.transpileModule(source, {
@@ -64,6 +77,20 @@ describe('blah', () => {
   });
   it('works3', () => {
     let result = ts.transpileModule(source3, {
+      compilerOptions: {
+        module: ts.ModuleKind.CommonJS,
+        paths: {
+          '*': ['../src/*'],
+        },
+        target: ts.ScriptTarget.ESNext,
+      },
+      transformers: { before: [namedTransformer()] },
+    });
+    console.log(result.outputText);
+    eval(result.outputText);
+  });
+  it('works4', () => {
+    let result = ts.transpileModule(source4, {
       compilerOptions: {
         module: ts.ModuleKind.CommonJS,
         paths: {
