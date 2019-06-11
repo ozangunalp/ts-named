@@ -9,7 +9,11 @@ function visitNode(node: Node, ts: typeof TS) {
   if (node == null) return node;
   if (ts.isCallExpression(node)) {
     if (node.expression.getText() === 'named') {
-      if (ts.isVariableDeclaration(node.parent) || ts.isPropertyDeclaration(node.parent)) {
+      if (
+        ts.isVariableDeclaration(node.parent) || // const v = named(id => ...)
+        ts.isPropertyDeclaration(node.parent) || // class C { v = named(id => ...) }
+        ts.isPropertyAssignment(node.parent) // const c = { p: named(id => ...) }
+      ) {
         if (ts.isArrowFunction(node.arguments[0])) {
           let expression = node.arguments[0] as ArrowFunction;
           let statements = null;
