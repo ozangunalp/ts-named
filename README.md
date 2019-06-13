@@ -47,7 +47,7 @@ You need to configure the build tool you use.
 ### Webpack
 
 ```js
-const named = require('ts-named');
+const tsNamed = require('ts-named');
 
 module.exports = {
   // ...etc...
@@ -59,7 +59,7 @@ module.exports = {
           {
             loader: 'ts-loader', // or awesome-typescript-loader
             options: {
-              getCustomTransformers: () => ({ before: [named] }),
+              getCustomTransformers: () => ({ before: [tsNamed()] }),
             },
           },
         ],
@@ -74,14 +74,14 @@ module.exports = {
 ```js
 const gulp = require('gulp');
 const ts = require('gulp-typescript');
-const named = require('ts-named');
+const tsNamed = require('ts-named');
 
 gulp.task('typescript', function() {
   gulp
     .src('src/**/*.ts')
     .pipe(
       ts({
-        getCustomTransformers: () => ({ before: [named] }),
+        getCustomTransformers: () => ({ before: [tsNamed()] }),
       })
     )
     .pipe(gulp.dest('dist'));
