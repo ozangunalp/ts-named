@@ -8,7 +8,7 @@ console.log(named1.id === 'named1');
 `;
 
 let source2 = `
-import { named } from 'ts-named';
+import { named } from "ts-named";
 class Typed {
   public id: string;
   public type: string;

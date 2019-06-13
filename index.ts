@@ -11,6 +11,6 @@ interface Transformer {
 
 const transformer: Transformer = namedTransformer as Transformer;
 // pass the config set which contains the compiler module
-transformer.factory = (cs: ConfigSet) => createTransformerFactory(cs);
+transformer.factory = (cs: Partial<ConfigSet>) => createTransformerFactory(cs);
 
 export default transformer;

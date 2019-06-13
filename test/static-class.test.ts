@@ -15,7 +15,7 @@ describe('static class', () => {
         },
         target: ts.ScriptTarget.ESNext,
       },
-      transformers: { before: [namedTransformer()] },
+      transformers: { before: [namedTransformer({ tsNamedModule: '../' })] },
     });
     console.log(result.outputText);
     eval(result.outputText);

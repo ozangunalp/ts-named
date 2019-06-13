@@ -1,14 +1,22 @@
 import TS, * as ts from 'typescript';
-import { ArrowFunction, Node, SourceFile, TransformationContext, TransformerFactory } from 'typescript';
+import { ArrowFunction, NamedImports, Node, SourceFile, TransformationContext, TransformerFactory } from 'typescript';
 
 export interface ConfigSet {
-  compilerModule?: typeof TS;
+  compilerModule: typeof TS;
+  tsNamedModule: string;
 }
 
-function visitNode(node: Node, ts: typeof TS) {
+function equalsWrappedText(wrappedValue: string, expected: string): boolean {
+  return wrappedValue === `'` + expected + `'` || wrappedValue === `"` + expected + `"`;
+}
+
+let importBinding: string;
+
+function visitNode(node: Node, pluginOptions: ConfigSet) {
+  const ts = pluginOptions.compilerModule;
   if (node == null) return node;
   if (ts.isCallExpression(node)) {
-    if (node.expression.getText() === 'named') {
+    if (node.expression.getText() === importBinding) {
       if (
         ts.isVariableDeclaration(node.parent) || // const v = named(id => ...)
         ts.isPropertyDeclaration(node.parent) || // class C { v = named(id => ...) }
@@ -29,28 +37,42 @@ function visitNode(node: Node, ts: typeof TS) {
     }
   }
   if (ts.isImportDeclaration(node)) {
-    if (node.moduleSpecifier.getText() === "'ts-named'") {
+    if (equalsWrappedText(node.moduleSpecifier.getText(), pluginOptions.tsNamedModule)) {
+      const importClause = node.importClause;
+      if (importClause) {
+        const namedBindings = importClause.namedBindings as NamedImports;
+        namedBindings.elements.forEach(value => {
+          importBinding = value.name.text;
+        });
+      }
       return undefined;
     }
   }
   return node;
 }
 
-export function visitSourceFile(sourceFile: SourceFile, context: TransformationContext, ts: typeof TS) {
+export function visitSourceFile(sourceFile: SourceFile, context: TransformationContext, pluginOptions: ConfigSet) {
   function visitNodeAndChildren(node: Node): undefined | Node {
     if (node == null) return node;
     node = ts.visitEachChild(node, childNode => visitNodeAndChildren(childNode), context);
-    return visitNode(node, ts);
+    return visitNode(node, pluginOptions);
   }
 
   return visitNodeAndChildren(sourceFile);
 }
 
-export function createTransformerFactory(cs: ConfigSet): TransformerFactory<SourceFile> {
-  return context => file => visitSourceFile(file, context, cs.compilerModule || ts) as SourceFile;
+export function createTransformerFactory(cs: Partial<ConfigSet>): TransformerFactory<SourceFile> {
+  return context => file =>
+    visitSourceFile(file, context, {
+      compilerModule: cs.compilerModule || ts,
+      tsNamedModule: cs.tsNamedModule || 'ts-named',
+    }) as SourceFile;
 }
 
-export function namedTransformer(pluginOptions: ConfigSet = {}): TransformerFactory<SourceFile> {
+export function namedTransformer(pluginOptions: Partial<ConfigSet> = {}): TransformerFactory<SourceFile> {
   return (context: TransformationContext) => (file: SourceFile) =>
-    visitSourceFile(file, context, pluginOptions.compilerModule || ts) as SourceFile;
+    visitSourceFile(file, context, {
+      compilerModule: pluginOptions.compilerModule || ts,
+      tsNamedModule: pluginOptions.tsNamedModule || 'ts-named',
+    }) as SourceFile;
 }

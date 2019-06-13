@@ -1,8 +1,8 @@
-import { named } from '../';
+import { named as _ } from '../';
 
 const typed = {
-  named1: named(id => ({ id: id, type: 'Type' })),
-  named2: named(id => ({ id: id, type: 'Other Type' })),
+  named1: _(id => ({ id: id, type: 'Type' })),
+  named2: _(id => ({ id: id, type: 'Other Type' })),
 };
 
 console.log(typed.named1.id === 'named1');
