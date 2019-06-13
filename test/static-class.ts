@@ -1,45 +1,27 @@
 import { named } from '../';
-
-abstract class Enum<T extends Enum<T>> {
-  readonly id: string;
-
-  protected constructor(id: string) {
-    this.id = id;
-  }
-
-  public values(): T[] {
-    let clazz = this.constructor;
-    return Object.keys(clazz).map(value => (clazz as any)[value] as T);
-  }
-
-  public get(id: string): T | undefined {
-    return this.values().find(value => value.id === id);
-  }
-}
-
-export function values<T extends Enum<T>>(t: Enum<T>): T[] {
-  return t.values();
-}
-
-export function get<T extends Enum<T>>(t: Enum<T>, id: string): T | undefined {
-  return t.get(id);
-}
+import { Enum } from './Enum';
 
 export class Typed extends Enum<Typed> {
   static readonly named1 = named(id => new Typed(id, 'Type'));
   static readonly named2 = named(id => new Typed(id, 'Other Type'));
   static readonly named3 = named(id => new Typed(id, Typed.named2.id));
+  static readonly named4 = named(id => new Typed(id, Typed.named2.id));
 
-  private constructor(public id: string, public type: string) {
+  static readonly d: number = 4;
+
+  private constructor(readonly id: string, readonly type: string) {
     super(id);
   }
 }
 
+console.log('is equal ? ');
+console.log(Typed.named3.id === Typed.named4.id);
+
 console.log('values');
-console.log(values(Typed.prototype));
+console.log(Typed.prototype.values());
 
 console.log('named2');
-console.log(get(Typed.prototype, 'named2'));
+console.log(Typed.prototype.get('named2'));
 
 console.log(Typed.named1.id === 'named1');
 console.log(Typed.named2.id === 'named2');
