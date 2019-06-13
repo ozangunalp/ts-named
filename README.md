@@ -44,8 +44,6 @@ The `named` function usage is replaced with an immediately invoked arrow functio
 TypeScript compiler does not provide a standard way of including AST transformers to the tsc.
 You need to configure the build tool you use.
 
-One catch is that
-
 ### Webpack
 
 ```js
