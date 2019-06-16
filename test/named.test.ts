@@ -46,8 +46,8 @@ console.log(typed.named1.id === 'named1');
 console.log(typed.named2.id === 'named2');
 `;
 
-describe('blah', () => {
-  it('works', () => {
+describe('named function test', () => {
+  it('json object affected to const', () => {
     let result = ts.transpileModule(source, {
       compilerOptions: {
         module: ts.ModuleKind.CommonJS,
@@ -61,7 +61,7 @@ describe('blah', () => {
     console.log(result.outputText);
     eval(result.outputText);
   });
-  it('works2', () => {
+  it('class instance', () => {
     let result = ts.transpileModule(source2, {
       compilerOptions: {
         module: ts.ModuleKind.CommonJS,
@@ -75,7 +75,7 @@ describe('blah', () => {
     console.log(result.outputText);
     eval(result.outputText);
   });
-  it('works3', () => {
+  it('object returned by lambda', () => {
     let result = ts.transpileModule(source3, {
       compilerOptions: {
         module: ts.ModuleKind.CommonJS,
@@ -89,7 +89,7 @@ describe('blah', () => {
     console.log(result.outputText);
     eval(result.outputText);
   });
-  it('works4', () => {
+  it('json object affected to property', () => {
     let result = ts.transpileModule(source4, {
       compilerOptions: {
         module: ts.ModuleKind.CommonJS,
