@@ -3,6 +3,8 @@ import { ConfigSet, createTransformerFactory, namedTransformer } from './src/nam
 
 export declare function named<T>(idF: (id: string) => T): T;
 
+export declare const name: string;
+
 interface Transformer {
   (): TransformerFactory<SourceFile>;
 

@@ -1,11 +1,15 @@
-import { named } from '../';
+import { named, name } from '../';
 import { Enum } from './Enum';
 
 export class Typed extends Enum<Typed> {
-  static readonly named1 = named(id => new Typed(id, 'Type'));
+  static readonly named1 = new Typed(name, 'Type');
   static readonly named2 = named(id => new Typed(id, 'Other Type'));
   static readonly named3 = named(id => new Typed(id, Typed.named2.id));
   static readonly named4 = named(id => new Typed(id, Typed.named2.id));
+  static readonly named5 = {
+    id: name,
+    type: 'Type2',
+  };
 
   static readonly d: number = 4;
 
@@ -13,6 +17,8 @@ export class Typed extends Enum<Typed> {
     super(id);
   }
 }
+
+console.log(Typed.named5.id);
 
 console.log('is equal ? ');
 console.log(Typed.named3.id === Typed.named4.id);
