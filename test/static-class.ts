@@ -1,8 +1,8 @@
-import { named, name } from '../';
+import { named, ID } from '../';
 import { Enum } from './Enum';
 
 export class Typed extends Enum<Typed> {
-  static readonly named1 = new Typed(name, 'Type');
+  static readonly named1 = new Typed(ID, 'Type');
   static readonly named2 = named(id => new Typed(id, 'Other Type'));
   static readonly named3 = named(id => new Typed(id, Typed.named2.id));
   static readonly named4 = named(id => new Typed(id, Typed.named2.id));

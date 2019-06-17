@@ -44,7 +44,7 @@ function isIdentifiedDeclaration(ts: typeof TS, node: Node): node is VariableDec
 
 const namedFunction = 'named';
 let namedFunctionBinding: string;
-const nameProperty = 'name';
+const nameProperty = 'ID';
 let namePropertyBinding: string;
 
 function visitNode(node: Node, pluginOptions: ConfigSet) {
