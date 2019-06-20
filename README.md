@@ -7,7 +7,7 @@
 which will escape [variable name mangling](https://en.wikipedia.org/wiki/Name_mangling) applied by tools like
 Terser or UglifyJS and will be conserved for runtime use.
 
-##`named` function
+## `named` function
 
 #### Transforms :
 
