@@ -35,11 +35,14 @@ function isIdentifiedDeclarationOrPropertyAssignment(ts: typeof TS, node: Node):
   );
 }
 
-function isIdentifiedDeclaration(ts: typeof TS, node: Node): node is VariableDeclaration | PropertyDeclaration {
+function isIdentifiedDeclaration(
+  ts: typeof TS,
+  node: Node
+): node is VariableDeclaration | PropertyDeclaration | PropertyAssignment {
   if (node === undefined) {
     return false;
   }
-  return ts.isVariableDeclaration(node) || ts.isPropertyDeclaration(node);
+  return ts.isVariableDeclaration(node) || ts.isPropertyDeclaration(node) || ts.isPropertyAssignment(node);
 }
 
 const namedFunction = 'named';
@@ -88,7 +91,10 @@ function visitNode(node: Node, pluginOptions: ConfigSet) {
   }
   if (ts.isIdentifier(node) && node.getText() === namePropertyBinding) {
     let n: Node = node;
-    while (!isIdentifiedDeclaration(ts, n)) {
+    while (
+      !isIdentifiedDeclaration(ts, n) ||
+      (ts.isPropertyAssignment(n) && n.initializer.getText() == namePropertyBinding)
+    ) {
       n = n.parent;
       if (n === undefined) {
         return node;
